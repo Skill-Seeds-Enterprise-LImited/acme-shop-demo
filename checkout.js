@@ -9,7 +9,7 @@ function total(items) {
 }
 
 function formatTotal(amount) {
-  return "$" + amount;
+  return "$" + amount.toFixed(2);
 }
 
 document.getElementById("cart").textContent = "Total: " + formatTotal(total(cart));
