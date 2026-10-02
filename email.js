@@ -11,6 +11,7 @@ export function sendPasswordReset(to, link) {
   }
 }
 
-function send(message) {
+// Reset emails use the transactional sender, which delivers in seconds; newsletters keep the bulk one.
+function send(message, sender = message.priority === "now" ? "transactional" : "bulk") {
   console.log("sending", message.subject, "to", message.to, message.priority === "now" ? "immediately" : "in the next batch");
 }
