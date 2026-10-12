@@ -5,7 +5,13 @@ const cart = [
 ];
 
 function total(items) {
-  return items.reduce((sum, item) => sum + item.price, 0);
+  // A checkout without a cart yet (or an item that was removed) counts as nothing, not a crash.
+  return (items ?? []).reduce((sum, item) => sum + (item?.price ?? 0), 0);
+}
+
+/** The basket total for a checkout; one whose cart hasn't loaded yet totals $0.00. */
+function computeCartTotal(checkout) {
+  return total(checkout?.cart);
 }
 
 /** A promo code takes a percentage off the total — it never replaces it. */
@@ -21,4 +27,4 @@ function formatTotal(amount) {
 }
 
 const promo = (new URLSearchParams(location.search).get("promo") || "").trim().toUpperCase();
-document.getElementById("cart").textContent = "Total: " + formatTotal(applyPromo(total(cart), promo));
+document.getElementById("cart").textContent = "Total: " + formatTotal(applyPromo(computeCartTotal({ cart }), promo));
